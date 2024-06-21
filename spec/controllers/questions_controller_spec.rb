@@ -57,6 +57,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'save a new question in database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
+
       it 'redirect to show view' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to assigns(:question)
@@ -80,6 +81,7 @@ RSpec.describe QuestionsController, type: :controller do
         patch :update, params: { id: question, question: attributes_for(:question) }
         expect(assigns(:question)).to eq question
       end
+
       it 'changes question attributes' do
         patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
         question.reload
