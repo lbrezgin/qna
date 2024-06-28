@@ -1,1 +1,20 @@
-p= link_to 'Ask question', new_question_path
+doctype html
+html
+  body
+    table
+      thead
+        tr
+          th Title
+          th Body
+      tbody
+        - @questions.each do |question|
+          tr
+            td= question.title
+            td= question.body
+
+-if current_user
+  p= link_to 'Ask question', new_user_question_path(current_user)
+-else
+  p= 'You need to sign in to write question'
+
+p= button_to "Sign out", destroy_user_session_path, method: :delete
