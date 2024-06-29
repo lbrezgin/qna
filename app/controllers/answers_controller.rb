@@ -7,12 +7,14 @@ class AnswersController < ApplicationController
   end
 
   def new
-    @answer = @question.answers.new
+    @answer = current_user.answers.new
+    @answer.question = @question
   end
 
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user_id = current_user.id
+    @answer = current_user.answers.new(answer_params)
+    @answer.question = @question
+
     if @answer.save
       redirect_to answer_path(@answer), notice: 'Your answer successfully created.'
     else
@@ -21,7 +23,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.id == @answer.user_id
+    if current_user.author_of(@answer)
       @answer.destroy
       redirect_to question_path(@answer.question), notice: 'Your answer successfully deleted.'
     else
@@ -40,6 +42,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :question_id, :user_id)
+    params.require(:answer).permit(:body, :question_id)
   end
 end

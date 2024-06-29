@@ -6,14 +6,14 @@ feature 'User can delete their answers', %q{
   I'd like to be able to destroy answer
 } do
 
-  given(:user1) { create(:user) }
-  given(:user2) { create(:user) }
-  given(:question) { create(:question, user_id: user1.id) }
-  given(:answer) { create(:answer, question_id: question.id, user_id: user1.id) }
+  given(:author) { create(:user) }
+  given(:non_author) { create(:user) }
+  given(:question) { create(:question, user: author) }
+  given(:answer) { create(:answer, question: question, user: author) }
 
   describe 'Authenticated user' do
     scenario 'tries to delete his answer' do
-      sign_in(user1)
+      sign_in(author)
       visit answer_path(answer)
       click_on 'Delete'
 
@@ -21,7 +21,7 @@ feature 'User can delete their answers', %q{
     end
 
     scenario 'tries to delete strangers answer' do
-      sign_in(user2)
+      sign_in(non_author)
       visit answer_path(answer)
       click_on 'Delete'
 

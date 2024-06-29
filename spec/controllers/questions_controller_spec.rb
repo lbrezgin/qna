@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question, user_id: user.id) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3, user_id: user.id) }
+    let(:questions) { create_list(:question, 3, user: user) }
     before { get :index }
 
     it 'populates an array of all questions' do
@@ -60,21 +60,22 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'save a new question in database' do
-        expect { post :create, params: { question: attributes_for(:question, user_id: user.id), user_id: user.id } }.to change(Question, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question, user: user), user_id: user.id } }.to change(Question, :count).by(1)
       end
 
       it 'redirect to show view' do
-        post :create, params: { question: attributes_for(:question, user_id: user.id), user_id: user.id }
+        post :create, params: { question: attributes_for(:question, user: user), user_id: user.id }
         expect(response).to redirect_to assigns(:question)
       end
     end
 
     context 'with invalid attributes' do
       it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid, user_id: user.id), user_id: user.id } }.to_not change(Question, :count)
+        expect { post :create, params: { question: attributes_for(:question, :invalid, user: user), user_id: user.id } }.to_not change(Question, :count)
       end
+
       it 're-renders new view' do
-        post :create, params: { question: attributes_for(:question, :invalid, user_id: user.id), user_id: user.id }
+        post :create, params: { question: attributes_for(:question, :invalid, user: user), user_id: user.id }
         expect(response).to render_template :new
       end
     end
@@ -85,26 +86,26 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question, user_id: user.id) }
+        patch :update, params: { id: question, question: attributes_for(:question, user: user) }
         expect(assigns(:question)).to eq question
       end
 
       it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body', user_id: user.id} }
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body', user: user} }
         question.reload
         expect(question.title).to eq 'new title'
         expect(question.body).to eq 'new body'
-        expect(question.user_id).to eq user.id
+        expect(question.user).to eq user
       end
 
       it 'redirects to updated question' do
-        patch :update, params: { id: question, question: attributes_for(:question, user_id: user.id) }
+        patch :update, params: { id: question, question: attributes_for(:question, user: user) }
         expect(response).to redirect_to question
       end
     end
 
     context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid, user_id: user.id) } }
+      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid, user: user) } }
 
       it 'does not change question attributes' do
         question.reload
@@ -122,7 +123,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'DELETE #destroy' do
     before { login(user) }
 
-    let!(:question) { create(:question, user_id: user.id) }
+    let!(:question) { create(:question, user: user) }
     let(:wrong_user) { create(:user) }
 
     it 'does not destroy the question, if user_id is wrong' do

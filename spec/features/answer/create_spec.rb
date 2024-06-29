@@ -7,12 +7,12 @@ feature 'User can create answer', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:question) { create(:question, user_id: user.id) }
+  given(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
     background do
       sign_in(user)
-      visit "/questions/#{question.id}"
+      visit question_path(question)
     end
 
     scenario 'answers the question' do
@@ -31,7 +31,8 @@ feature 'User can create answer', %q{
   end
 
   scenario 'Unauthenticated user tries to answer a question' do
-    visit "/questions/#{question.id}"
+    visit question_path(question)
+
     fill_in 'Body', with: 'Answers body'
     click_on 'Answer'
 

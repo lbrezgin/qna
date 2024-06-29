@@ -6,26 +6,31 @@ feature 'User can register', %q{
   I'd like to be able to register
 } do
 
-  scenario 'Unregistered user tries to register' do
-    visit new_user_registration_path
+  context "Unregistered user" do
+    scenario 'tries to register' do
+      visit new_user_registration_path
 
-    fill_in 'Email', with: 'lewickbrez@gmail.com'
-    fill_in 'Password', with: '123456'
-    fill_in 'Password confirmation', with: '123456'
-    click_on 'Sign up'
+      fill_in 'Email', with: 'lewickbrez@gmail.com'
+      fill_in 'Password', with: '123456'
+      fill_in 'Password confirmation', with: '123456'
+      click_on 'Sign up'
 
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
+      expect(page).to have_content 'Welcome! You have signed up successfully.'
+    end
   end
 
-  given(:user) { create(:user) }
-  scenario 'Registered user tries to register' do
-    visit new_user_registration_path
+  context "Registrated user" do
+    given(:user) { create(:user) }
 
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    fill_in 'Password confirmation', with: user.password
-    click_on 'Sign up'
+    scenario 'Registered user tries to register' do
+      visit new_user_registration_path
 
-    expect(page).to have_content 'Email has already been taken'
+      fill_in 'Email', with: user.email
+      fill_in 'Password', with: user.password
+      fill_in 'Password confirmation', with: user.password
+      click_on 'Sign up'
+
+      expect(page).to have_content 'Email has already been taken'
+    end
   end
 end

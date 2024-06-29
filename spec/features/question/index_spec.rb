@@ -7,7 +7,7 @@ feature 'User can view questions', %q{
 } do
 
   given(:user) { create(:user) }
-  given!(:questions) { create_list(:question, 3, user_id: user.id) }
+  given!(:questions) { create_list(:question, 3, user: user) }
 
   scenario 'User views questions' do
     visit user_questions_path(user)

@@ -7,9 +7,9 @@ feature 'User can see question, and answers to question', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:question) { create(:question, user_id: user.id) }
+  given(:question) { create(:question, user: user) }
   scenario 'User views question' do
-    visit "/questions/#{question.id}"
+    visit question_path(question)
 
     expect(page).to have_content question.title
     expect(page).to have_content question.body
