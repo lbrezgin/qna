@@ -1,20 +1,32 @@
 class AnswersController < ApplicationController
-  before_action :load_answer, only: [:show]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :load_answer, only: [:show, :destroy]
   before_action :load_question, only: [:new, :create]
 
   def show
   end
 
   def new
-    @answer = @question.answers.new
+    @answer = current_user.answers.new(question: @question)
   end
 
   def create
-    @answer = Answer.new(answer_params)
+    @answer = current_user.answers.new(answer_params)
+    @answer.question = @question
+
     if @answer.save
-      redirect_to question_answer_path(@question, @answer)
+      redirect_to answer_path(@answer), notice: 'Your answer successfully created.'
     else
-      render :new
+      render '/questions/show'
+    end
+  end
+
+  def destroy
+    if current_user.author_of(@answer)
+      @answer.destroy
+      redirect_to question_path(@answer.question), notice: 'Your answer successfully deleted.'
+    else
+      redirect_to question_path(@answer.question), notice: 'You can not delete answer, which was not created by you.'
     end
   end
 

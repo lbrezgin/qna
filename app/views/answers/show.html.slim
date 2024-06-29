@@ -1,1 +1,4 @@
-h1 Show answer
+p= @answer.body
+p= button_to 'Delete',
+        answer_path(@answer),
+        method: :delete
