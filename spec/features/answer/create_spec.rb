@@ -15,15 +15,14 @@ feature 'User can create answer', %q{
       visit question_path(question)
     end
 
-    scenario 'answers the question' do
+    scenario 'answers the question', js: true do
       fill_in 'Body', with: 'Answers body'
       click_on 'Answer'
 
-      expect(page).to have_content 'Your answer successfully created.'
       expect(page).to have_content 'Answers body'
     end
 
-    scenario 'answers the question with errors' do
+    scenario 'answers the question with errors', js: true do
       click_on 'Answer'
 
       expect(page).to have_content "Body can't be blank"

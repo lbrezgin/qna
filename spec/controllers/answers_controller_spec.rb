@@ -39,12 +39,12 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       it 'save a new answer in database' do
-        expect { post :create, params: { answer: attributes_for(:answer, question: question, user: user), question_id: question.id } }.to change(Answer, :count).by(1)
+        expect { post :create, params: { answer: attributes_for(:answer, question: question, user: user), question_id: question.id }, format: :js }.to change(Answer, :count).by(1)
       end
 
-      before { post :create, params: { answer: attributes_for(:answer, question: question, user: user), question_id: question.id } }
-      it 'redirect to show view' do
-        expect(response).to redirect_to answer_path(assigns(:answer))
+      before { post :create, params: { answer: attributes_for(:answer, question: question, user: user), question_id: question.id }, format: :js }
+      it 'redirect to question show view' do
+        expect(response).to render_template :create
       end
 
       it 'sets correct question in answer' do
@@ -54,13 +54,13 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid attributes' do
       it 'does not save the answer' do
-        expect { post :create, params: { answer: attributes_for(:answer, :invalid, question: question, user: user), question_id: question.id } }.to_not change(Answer, :count)
+        expect { post :create, params: { answer: attributes_for(:answer, :invalid, question: question, user: user), question_id: question.id }, format: :js }.to_not change(Answer, :count)
       end
 
       it 'renders questions show view' do
-        post :create, params: { answer: attributes_for(:answer, :invalid, question: question, user: user), question_id: question.id }
+        post :create, params: { answer: attributes_for(:answer, :invalid, question: question, user: user), question_id: question.id, format: :js }
 
-        expect(response).to render_template 'questions/show'
+        expect(response).to render_template :create
       end
     end
   end
