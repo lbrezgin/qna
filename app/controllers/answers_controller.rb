@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_answer, only: [:show, :destroy]
+  before_action :load_answer, only: [:show, :destroy, :update]
   before_action :load_question, only: [:new, :create]
 
   def show
@@ -15,6 +15,11 @@ class AnswersController < ApplicationController
     @answer.question = @question
 
     @answer.save
+  end
+
+  def update
+    @answer.update(answer_params)
+    @question = @answer.question
   end
 
   def destroy

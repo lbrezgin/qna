@@ -1,1 +1,10 @@
 p= answer.body
+
+- if user_signed_in? && answer.body
+  p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+
+- if answer.body
+  =form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}"}, local: false do |f|
+    = f.label :body, 'Your answer'
+    = f.text_area :body
+    = f.submit 'Save'
