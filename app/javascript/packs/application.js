@@ -13,3 +13,4 @@ Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 import "answers"
+import "questions"

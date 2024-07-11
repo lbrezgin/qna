@@ -1,12 +1,16 @@
-h1= @question.title
-p= @question.body
+.question
+  = render @question
+
+.question-errors
+  = render 'shared/errors', resource: @question
+
 
 p= button_to 'Delete',
         question_path(@question),
         method: :delete
 
 .answers
-  = render @question.answers
+  = render @question.answers.order(:id)
 
 .answer-errors
   = render 'shared/errors', resource: @answer
