@@ -10,7 +10,9 @@ p= button_to 'Delete',
         method: :delete
 
 .answers
-  = render @question.answers.order(:id)
+  = render @answers
+
+.deleted-info
 
 .answer-errors
   = render 'shared/errors', resource: @answer

@@ -1,6 +1,6 @@
 $('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
 
 <% if !@answer.errors.present? %>
-  $('.answers').html('<%= j render @question.answers.order(:id) %>');
+  $('.answers').html('<%= j render @question.answers.sort_by_best.order(:id) %>');
 <% end %>
 
