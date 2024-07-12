@@ -1,18 +1,23 @@
-= render 'shared/errors', resource: @answer
+.question
+  = render @question
 
-h1= @question.title
-p= @question.body
+.question-errors
+  = render 'shared/errors', resource: @question
+
 
 p= button_to 'Delete',
         question_path(@question),
         method: :delete
 
-h2 Answers
-- @question.answers.each do |answer|
-  p= answer.body
+.answers
+  = render @answers
 
-h2 New Answer
-= form_with model: [@question, @answer], local: true do |f|
+.deleted-info
+
+.answer-errors
+  = render 'shared/errors', resource: @answer
+
+= form_with model: [@question, @answer], class: 'new-answer', local: false do |f|
   = f.label :body
   = f.text_area :body
 

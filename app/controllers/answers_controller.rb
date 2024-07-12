@@ -1,7 +1,14 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_answer, only: [:show, :destroy]
+  before_action :load_answer, only: [:show, :destroy, :update, :mark_as_best]
   before_action :load_question, only: [:new, :create]
+
+  def mark_as_best
+    if current_user.author_of?(@answer.question)
+      @answer.mark_as_best
+      @question = @answer.question
+    end
+  end
 
   def show
   end
@@ -14,19 +21,19 @@ class AnswersController < ApplicationController
     @answer = current_user.answers.new(answer_params)
     @answer.question = @question
 
-    if @answer.save
-      redirect_to answer_path(@answer), notice: 'Your answer successfully created.'
-    else
-      render '/questions/show'
+    @answer.save
+  end
+
+  def update
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
+      @question = @answer.question
     end
   end
 
   def destroy
-    if current_user.author_of(@answer)
+    if current_user.author_of?(@answer)
       @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Your answer successfully deleted.'
-    else
-      redirect_to question_path(@answer.question), notice: 'You can not delete answer, which was not created by you.'
     end
   end
 
