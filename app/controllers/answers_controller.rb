@@ -4,7 +4,7 @@ class AnswersController < ApplicationController
   before_action :load_question, only: [:new, :create]
 
   def mark_as_best
-    if current_user.author_of(@answer.question)
+    if current_user.author_of?(@answer.question)
       @answer.mark_as_best
       @question = @answer.question
     end
@@ -25,14 +25,14 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if current_user.author_of(@answer)
+    if current_user.author_of?(@answer)
       @answer.update(answer_params)
       @question = @answer.question
     end
   end
 
   def destroy
-    if current_user.author_of(@answer)
+    if current_user.author_of?(@answer)
       @answer.destroy
     end
   end
