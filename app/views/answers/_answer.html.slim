@@ -5,6 +5,9 @@ div id="answer-#{answer.id}"
     p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     p= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
     p= link_to 'Choose', mark_as_best_answer_path(answer), method: :patch, remote: true
+  - if answer.files.attached?
+    - answer.files.each do |file|
+      p= link_to file.filename.to_s, url_for(file)
 
   - if answer.body
     =form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}"}, local: false do |f|
