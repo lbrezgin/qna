@@ -14,7 +14,10 @@ html
 
 -if current_user
   p= link_to 'Ask question', new_user_question_path(current_user)
+  p= link_to "Sign out", destroy_user_session_path, method: :delete
+
 -else
   p= 'You need to sign in to write question'
+  p= link_to 'Sign in', new_user_session_path
 
-p= button_to "Sign out", destroy_user_session_path, method: :delete
+

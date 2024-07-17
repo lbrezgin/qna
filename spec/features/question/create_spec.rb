@@ -13,7 +13,7 @@ feature 'User can create question', %q{
       sign_in(user)
       visit user_questions_path(user)
       click_on 'Ask question'
-  end
+    end
 
     scenario 'asks a question' do
       fill_in 'Title', with: 'Test question'
