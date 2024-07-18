@@ -17,29 +17,29 @@ feature 'User can edit his answer', %q{
     expect(page).to_not have_link 'Edit'
   end
 
-  describe 'Authenticated user' do
-    scenario 'edits his answer', js: true do
+  describe 'Authenticated user which is author' do
+    background do
       sign_in(user)
       visit question_path(question)
 
       click_on 'Edit'
+    end
 
+    scenario 'edits his answer', js: true do
       within '.answers' do
         fill_in 'Your answer', with: 'Edited answer'
+        attach_file 'Files', "#{Rails.root}/spec/spec_helper.rb"
+
         click_on 'Save'
 
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'Edited answer'
         expect(page).to_not have_selector 'textarea'
+        expect(page).to have_link 'spec_helper.rb'
       end
     end
 
     scenario 'edits his answer with errors', js: true do
-      sign_in(user)
-      visit question_path(question)
-
-      click_on 'Edit'
-
       within '.answers' do
         fill_in 'Your answer', with: ''
         click_on 'Save'
@@ -48,13 +48,13 @@ feature 'User can edit his answer', %q{
       end
       expect(page).to have_content "Body can't be blank"
     end
+  end
 
-    given!(:non_author) { create :user }
-    scenario "tries to edit other user's answer", js: true do
-      sign_in(non_author)
-      visit question_path(question)
+  given!(:non_author) { create :user }
+  scenario "Authenticated user tries to edit other user's answer", js: true do
+    sign_in(non_author)
+    visit question_path(question)
 
-      expect(page).to_not have_link 'Edit'
-    end
+    expect(page).to_not have_link 'Edit'
   end
 end
