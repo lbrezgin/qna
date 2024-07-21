@@ -14,24 +14,21 @@
 
 -if current_user
   = form_with model: [@question, @answer], class: 'new-answer', local: false do |f|
-    p
+    .field
       = f.label :body
+      br
       = f.text_area :body
-    p
+    .field
       = f.label :files
+      br
       = f.file_field :files, multiple: true, direct_upload: true
-    p Links:
-    p
-      = f.fields_for :links do |l|
-        p
-          = l.label :name, 'Link name'
-          = l.text_field :name
-        p
-          = l.label :url
-          = l.text_field :url
-    p
-      = f.submit 'Answer'
+      h3 Links:
+      #links
+        = f.fields_for :links do |link|
+          = render 'link_fields', f: link
+        .links
+          = link_to_add_association 'add link', f, :links
+        = f.submit 'Answer'
 -else
   p= 'You need to sign in to write answer'
   p= link_to 'Sign in', new_user_session_path
-
