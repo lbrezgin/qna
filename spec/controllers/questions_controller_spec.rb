@@ -87,6 +87,12 @@ RSpec.describe QuestionsController, type: :controller do
         expect { post :create, params: { question: attributes_for(:question, :invalid, user: user), user_id: user.id } }.to_not change(Question, :count)
       end
 
+      it 'does not save the question with invalid url' do
+        expect { post :create, params: { question: attributes_for(:question, user: user).merge(
+          links_attributes: [attributes_for(:link, url: 'invalid url', name: 'Example')] ),user_id: user.id }
+        }.to_not change(Question, :count)
+      end
+
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:question, :invalid, user: user), user_id: user.id }
         expect(response).to render_template :new

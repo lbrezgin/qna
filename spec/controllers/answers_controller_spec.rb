@@ -57,6 +57,12 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, params: { answer: attributes_for(:answer, :invalid, question: question, user: user), question_id: question.id }, format: :js }.to_not change(Answer, :count)
       end
 
+      it 'does not save the answer with invalid url' do
+        expect { post :create, params: { answer: attributes_for(:answer, question: question, user: user).merge(
+          links_attributes: [attributes_for(:link, url: 'invalid url', name: 'Example')] ), question_id: question.id }, format: :js
+        }.to_not change(Answer, :count)
+      end
+
       it 'renders create template' do
         post :create, params: { answer: attributes_for(:answer, :invalid, question: question, user: user), question_id: question.id, format: :js }
 
