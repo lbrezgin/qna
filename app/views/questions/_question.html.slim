@@ -16,19 +16,24 @@ p= @question.body
   p= link_to 'Delete', question_path(@question), method: :delete
 
   = form_with model: @question, class: 'hidden', html: { id: "edit-question-#{@question.id}"}, local: false do |f|
-    p
+    .field
       = f.label :title, 'New title'
+      br
       = f.text_field :title
-    p
+    .field
       = f.label :body, 'New body'
+      br
       = f.text_area :body
-    p
+    .field
       = f.label :files
+      br
       = f.file_field :files, multiple: true, direct_upload: true
-    p
+    .field
       - @question.files.each do |file|
         div id="attachment-#{file.id}"
           p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
-
-    p
+    h3 Links:
+    #links
+      .links
+        = link_to_add_association 'add link', f, :links
     = f.submit 'Save'

@@ -16,16 +16,20 @@ div id="answer-#{answer.id}"
 
 - if answer.body
   =form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}"}, local: false do |f|
-    p
+    .field
       = f.label :body, 'Your answer'
+      br
       = f.text_area :body
-    p
+    .field
       = f.label :files
+      br
       = f.file_field :files, multiple: true, direct_upload: true
-    p
+    .field
       - answer.files.each do |file|
         div id="attachment-#{file.id}"
           p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
-
-    p
+    h3 Links:
+    #links
+      .links
+        = link_to_add_association 'add link', f, :links
       = f.submit 'Save'

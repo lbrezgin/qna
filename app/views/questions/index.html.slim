@@ -11,7 +11,7 @@ html
           tr
             td= question.title
             td= question.body
-
+            td= link_to 'Show', question_path(question)
 -if current_user
   p= link_to 'Ask question', new_user_question_path(current_user)
   p= link_to "Sign out", destroy_user_session_path, method: :delete
