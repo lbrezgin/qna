@@ -33,3 +33,7 @@ div id="answer-#{answer.id}"
       .links
         = link_to_add_association 'add link', f, :links
       = f.submit 'Save'
+      .answer-links-manage
+        - answer.links.each do |link|
+          div id="link-#{link.id}"
+            p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"
