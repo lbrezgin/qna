@@ -18,18 +18,18 @@ feature 'User can add links to question', %q{
   end
 
   scenario 'User adds link when asks question', js: true do
-     fill_in 'Link name', with: 'Cats'
-     fill_in 'Url', with: link
-     click_on 'add link'
+    fill_in 'Link name', with: 'Cats'
+    fill_in 'Url', with: link
+    click_on 'add link'
 
-     within all('.nested-fields').last do
-       fill_in 'Link name', with: 'Dogs'
-       fill_in 'Url', with: sec_link
-     end
-     click_on 'Ask'
+    within all('.nested-fields').last do
+      fill_in 'Link name', with: 'Dogs'
+      fill_in 'Url', with: sec_link
+    end
+    click_on 'Ask'
 
-     expect(page).to have_link 'Dogs', href: sec_link
-     expect(page).to have_link 'Cats', href: link
+    expect(page).to have_link 'Dogs', href: sec_link
+    expect(page).to have_link 'Cats', href: link
   end
 
   scenario 'User adds link with invalid url when asks question', js: true do
