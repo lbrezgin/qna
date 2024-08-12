@@ -39,10 +39,21 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       it 'save a new answer in database' do
-        expect { post :create, params: { answer: attributes_for(:answer, question: question, user: user), question_id: question.id }, format: :js }.to change(Answer, :count).by(1)
+        expect { post :create, params: {
+          answer: attributes_for(:answer, question: question, user: user).merge(
+            links_attributes: [attributes_for(:link, url: 'https://en.wikipedia.org/wiki/Cat', name: 'Cats')]),
+            question_id: question.id
+        }, format: :js }.to change(Answer, :count).by(1)
       end
 
-      before { post :create, params: { answer: attributes_for(:answer, question: question, user: user), question_id: question.id }, format: :js }
+      before do
+        post :create, params: {
+          answer: attributes_for(:answer, question: question, user: user).merge(
+            links_attributes: [attributes_for(:link, url: 'https://en.wikipedia.org/wiki/Cat', name: 'Cats')]),
+            question_id: question.id
+        }, format: :js
+      end
+
       it 'renders create template' do
         expect(response).to render_template :create
       end

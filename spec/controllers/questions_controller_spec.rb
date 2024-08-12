@@ -72,12 +72,27 @@ RSpec.describe QuestionsController, type: :controller do
     before { login(user) }
 
     context 'with valid attributes' do
-      it 'save a new question in database' do
-        expect { post :create, params: { question: attributes_for(:question, user: user), user_id: user.id } }.to change(Question, :count).by(1)
+      it 'saves a new question in the database' do
+        expect {
+          post :create, params: {
+            question: attributes_for(:question).merge(
+              links_attributes: [attributes_for(:link, url: 'https://en.wikipedia.org/wiki/Cat', name: 'Cats')],
+              reward_attributes: { title: 'Test reward', image: fixture_file_upload("#{Rails.root}/app/assets/images/test_reward.png") }
+            ),
+            user_id: user.id
+          }
+        }.to change(Question, :count).by(1)
       end
 
+
       it 'redirect to show view' do
-        post :create, params: { question: attributes_for(:question, user: user), user_id: user.id }
+        post :create, params: {
+          question: attributes_for(:question).merge(
+            links_attributes: [attributes_for(:link, url: 'https://en.wikipedia.org/wiki/Cat', name: 'Cats')],
+            reward_attributes: { title: 'Test reward', image: fixture_file_upload("#{Rails.root}/app/assets/images/test_reward.png") }
+          ),
+          user_id: user.id
+        }
         expect(response).to redirect_to assigns(:question)
       end
     end
