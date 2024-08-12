@@ -10,6 +10,8 @@ p= @question.body
   ul
     - @question.links.each do |link|
       li= link_to link.name, link.url
+      - if link.gist?
+        div.gist-content data-gist-id=link.get_id_from_url(link.url)
 
 - if user_signed_in? && current_user.author_of?(@question)
   p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: @question.id }

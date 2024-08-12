@@ -13,5 +13,6 @@ require("@nathanvda/cocoon")
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+import "links"
 import "answers"
 import "questions"

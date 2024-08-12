@@ -46,4 +46,12 @@ feature 'User can add links to answer', %q{
     expect(page).to have_content "Links url is not a valid URL"
     expect(page).to_not have_link 'Cats', href: "invalid url"
   end
+
+  scenario 'User adds link on gist', js: true do
+    fill_in 'Link name', with: 'Gist'
+    fill_in 'Url', with: "https://gist.github.com/lbrezgin/5a5da66d54c86058e8cf68cdbc1e33e2"
+
+    click_on 'Answer'
+    expect(page).to have_content "test gist content"
+  end
 end
