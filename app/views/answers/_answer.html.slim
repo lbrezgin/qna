@@ -2,25 +2,40 @@ div id="answer-#{answer.id}"
   p= answer.body
   = "Best" if answer.best
   - if user_signed_in? && answer.body && current_user.author_of?(answer)
-    p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     p= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
     p= link_to 'Choose', mark_as_best_answer_path(answer), method: :patch, remote: true
   - if answer.files.attached?
     - answer.files.each do |file|
       p= link_to file.filename.to_s, url_for(file)
+  .links
+    p Links:
+    ul
+      - answer.links.each do |link|
+        li= link_to link.name, link.url
+        - if link.gist?
+          div.gist-content data-gist-id=link.get_id_from_url(link.url)
 
-  - if answer.body
-    =form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}"}, local: false do |f|
-      p
-        = f.label :body, 'Your answer'
-        = f.text_area :body
-      p
-        = f.label :files
-        = f.file_field :files, multiple: true, direct_upload: true
-      p
-        - answer.files.each do |file|
-          div id="attachment-#{file.id}"
-            p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
-
-      p
-        = f.submit 'Save'
+- if answer.body
+  =form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}"}, local: false do |f|
+    .field
+      = f.label :body, 'Your answer'
+      br
+      = f.text_area :body
+    .field
+      = f.label :files
+      br
+      = f.file_field :files, multiple: true, direct_upload: true
+    .field
+      - answer.files.each do |file|
+        div id="attachment-#{file.id}"
+          p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
+    h3 Links:
+    #links
+      .links
+        = link_to_add_association 'add link', f, :links
+      = f.submit 'Save'
+      .answer-links-manage
+        - answer.links.each do |link|
+          div id="link-#{link.id}"
+            p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"

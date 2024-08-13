@@ -1,5 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+require 'validate_url/rspec_matcher'
+
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
@@ -29,6 +31,18 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+Capybara.register_driver :chrome do |app|
+  chrome_options = Selenium::WebDriver::Chrome::Options.new
+  chrome_options.add_argument('--disable-search-engine-choice-screen')
+  chrome_options.add_argument('--headless')
+
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: chrome_options)
+end
+
+Capybara.default_driver    = :chrome
+Capybara.javascript_driver = :chrome
+
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -40,7 +54,6 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
-  Capybara.javascript_driver = :selenium_chrome_headless
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 

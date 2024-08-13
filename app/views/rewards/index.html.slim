@@ -1,0 +1,12 @@
+table
+  thead
+    tr
+      th Question's title
+      th Reward title
+      th Reward image
+  tbody
+    - @rewards.each do |reward|
+      tr
+        td= reward.question.title
+        td= reward.title
+        td= image_tag(reward.image)

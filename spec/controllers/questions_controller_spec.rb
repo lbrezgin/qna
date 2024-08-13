@@ -29,6 +29,10 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:answers)).to eq answers
     end
 
+    it 'assigns new link for answer' do
+      expect(assigns(:answer).links.first).to be_a_new(Link)
+    end
+
     it 'renders show view' do
       expect(response).to render_template :show
     end
@@ -40,6 +44,10 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'assigns a new question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
+    end
+
+    it 'assigns a new link' do
+      expect(assigns(:question).links.first).to be_a_new(Link)
     end
 
     it 'renders new view' do
@@ -64,12 +72,27 @@ RSpec.describe QuestionsController, type: :controller do
     before { login(user) }
 
     context 'with valid attributes' do
-      it 'save a new question in database' do
-        expect { post :create, params: { question: attributes_for(:question, user: user), user_id: user.id } }.to change(Question, :count).by(1)
+      it 'saves a new question in the database' do
+        expect {
+          post :create, params: {
+            question: attributes_for(:question).merge(
+              links_attributes: [attributes_for(:link, url: 'https://en.wikipedia.org/wiki/Cat', name: 'Cats')],
+              reward_attributes: { title: 'Test reward', image: fixture_file_upload("#{Rails.root}/app/assets/images/test_reward.png") }
+            ),
+            user_id: user.id
+          }
+        }.to change(Question, :count).by(1)
       end
 
+
       it 'redirect to show view' do
-        post :create, params: { question: attributes_for(:question, user: user), user_id: user.id }
+        post :create, params: {
+          question: attributes_for(:question).merge(
+            links_attributes: [attributes_for(:link, url: 'https://en.wikipedia.org/wiki/Cat', name: 'Cats')],
+            reward_attributes: { title: 'Test reward', image: fixture_file_upload("#{Rails.root}/app/assets/images/test_reward.png") }
+          ),
+          user_id: user.id
+        }
         expect(response).to redirect_to assigns(:question)
       end
     end
@@ -77,6 +100,12 @@ RSpec.describe QuestionsController, type: :controller do
     context 'with invalid attributes' do
       it 'does not save the question' do
         expect { post :create, params: { question: attributes_for(:question, :invalid, user: user), user_id: user.id } }.to_not change(Question, :count)
+      end
+
+      it 'does not save the question with invalid url' do
+        expect { post :create, params: { question: attributes_for(:question, user: user).merge(
+          links_attributes: [attributes_for(:link, url: 'invalid url', name: 'Example')] ),user_id: user.id }
+        }.to_not change(Question, :count)
       end
 
       it 're-renders new view' do

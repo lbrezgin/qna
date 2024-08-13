@@ -5,24 +5,49 @@ p= @question.body
   - @question.files.each do |file|
     p= link_to file.filename.to_s, url_for(file)
 
+.links
+  p Links:
+  ul
+    - @question.links.each do |link|
+      li= link_to link.name, link.url
+      - if link.gist?
+        div.gist-content data-gist-id=link.get_id_from_url(link.url)
+
+.reward
+  h1 Reward:
+  ul
+    li
+      - if @question.reward
+        p= @question.reward.title
+        = image_tag(@question.reward.image)
+
 - if user_signed_in? && current_user.author_of?(@question)
-  p=link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: @question.id }
+  p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: @question.id }
   p= link_to 'Delete', question_path(@question), method: :delete
 
   = form_with model: @question, class: 'hidden', html: { id: "edit-question-#{@question.id}"}, local: false do |f|
-    p
+    .field
       = f.label :title, 'New title'
+      br
       = f.text_field :title
-    p
+    .field
       = f.label :body, 'New body'
+      br
       = f.text_area :body
-    p
+    .field
       = f.label :files
+      br
       = f.file_field :files, multiple: true, direct_upload: true
-    p
+    .field
       - @question.files.each do |file|
         div id="attachment-#{file.id}"
           p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
-
-    p
+    h3 Links:
+    #links
+      .links
+        = link_to_add_association 'add link', f, :links
     = f.submit 'Save'
+    .question-links-manage
+      - @question.links.each do |link|
+        div id="link-#{link.id}"
+          p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"
