@@ -12,6 +12,10 @@ class Answer < ApplicationRecord
     transaction do
       self.class.where(question_id: self.question_id).update_all(best: false)
       update(best: true)
+      if self.question.reward
+        Reward.where(question_id: self.question_id).update_all(user_id: nil)
+        self.question.reward.update(user_id: self.user.id)
+      end
     end
   end
 end
