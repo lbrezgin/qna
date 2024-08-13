@@ -37,3 +37,5 @@
 yarn-debug.log*
 .yarn-integrity
 config/database.yml
+package-lock.json
+yarn.lock

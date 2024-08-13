@@ -211,7 +211,7 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rexml (3.3.4)
+    rexml (3.3.5)
       strscan
     rspec-core (3.13.0)
       rspec-support (~> 3.13.0)
@@ -246,7 +246,7 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
-    shoulda-matchers (6.3.0)
+    shoulda-matchers (6.3.1)
       activesupport (>= 5.2.0)
     slim (5.2.1)
       temple (~> 0.10.0)
