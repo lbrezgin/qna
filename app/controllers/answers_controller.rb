@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  include PublicIndex
+
   before_action :load_answer, only: [:show, :destroy, :update, :mark_as_best]
   before_action :load_question, only: [:new, :create]
 
@@ -8,6 +9,9 @@ class AnswersController < ApplicationController
       @answer.mark_as_best
       @question = @answer.question
     end
+  end
+
+  def index
   end
 
   def show
