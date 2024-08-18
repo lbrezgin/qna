@@ -13,16 +13,6 @@ feature 'User can dislike resource ', %q{
 
   describe 'Authenticated user' do
     context '(when resource is question)' do
-      scenario 'tries to dislike his question' do
-        sign_in(author)
-        visit question_path(question)
-        within '.question' do
-          click_on 'Dislike'
-
-          expect(page).to have_content 'You can\'t vote for your own question'
-        end
-      end
-
       background do
         sign_in(non_author)
         visit question_path(question)
@@ -43,19 +33,20 @@ feature 'User can dislike resource ', %q{
           expect(page).to have_content "0"
         end
       end
+
+      scenario 'tries to dislike his question' do
+        sign_out
+        sign_in(author)
+        visit question_path(question)
+        within '.question' do
+          click_on 'Dislike'
+
+          expect(page).to have_content 'You can\'t vote for your own question'
+        end
+      end
     end
 
     context '(when resource is answer)' do
-      scenario 'tries to dislike his answer' do
-        sign_in(author)
-        visit question_path(question)
-        within '.answers' do
-          click_on 'Dislike'
-
-          expect(page).to have_content 'You can\'t vote for your own answer'
-        end
-      end
-
       background do
         sign_in(non_author)
         visit question_path(question)
@@ -76,6 +67,17 @@ feature 'User can dislike resource ', %q{
           expect(page).to have_content "0"
         end
       end
+
+      scenario 'tries to dislike his answer' do
+        sign_out
+        sign_in(author)
+        visit question_path(question)
+        within '.answers' do
+          click_on 'Dislike'
+
+          expect(page).to have_content 'You can\'t vote for your own answer'
+        end
+      end
     end
   end
 
@@ -86,8 +88,8 @@ feature 'User can dislike resource ', %q{
         within '.question' do
           click_on 'Dislike'
 
-          expect(page).to have_content 'You need to sign in or sign up before continuing.'
         end
+        expect(page).to have_content 'You need to sign in or sign up before continuing.'
       end
     end
 
@@ -97,8 +99,8 @@ feature 'User can dislike resource ', %q{
         within '.answers' do
           click_on 'Dislike'
 
-          expect(page).to have_content 'You need to sign in or sign up before continuing.'
         end
+        expect(page).to have_content 'You need to sign in or sign up before continuing.'
       end
     end
   end

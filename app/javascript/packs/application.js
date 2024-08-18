@@ -16,3 +16,4 @@ ActiveStorage.start()
 import "links"
 import "answers"
 import "questions"
+import "votes"

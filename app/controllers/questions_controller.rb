@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   include PublicIndex
+  include Voted
 
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :load_user, only: [:new, :create]
