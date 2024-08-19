@@ -1,4 +1,4 @@
-div id="answer-#{answer.id}"
+div id="answer-#{answer.id}" class="answer"
   p= answer.body
   = "Best" if answer.best
   - if user_signed_in? && answer.body && current_user.author_of?(answer)
@@ -16,26 +16,31 @@ div id="answer-#{answer.id}"
         - if link.gist?
           div.gist-content data-gist-id=link.get_id_from_url(link.url)
 
-- if answer.body
-  =form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}"}, local: false do |f|
-    .field
-      = f.label :body, 'Your answer'
-      br
-      = f.text_area :body
-    .field
-      = f.label :files
-      br
-      = f.file_field :files, multiple: true, direct_upload: true
-    .field
-      - answer.files.each do |file|
-        div id="attachment-#{file.id}"
-          p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
-    h3 Links:
-    #links
-      .links
-        = link_to_add_association 'add link', f, :links
-      = f.submit 'Save'
-      .answer-links-manage
-        - answer.links.each do |link|
-          div id="link-#{link.id}"
-            p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"
+  - if answer.body
+    =form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}"}, local: false do |f|
+      .field
+        = f.label :body, 'Your answer'
+        br
+        = f.text_area :body
+      .field
+        = f.label :files
+        br
+        = f.file_field :files, multiple: true, direct_upload: true
+      .field
+        - answer.files.each do |file|
+          div id="attachment-#{file.id}"
+            p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
+      h3 Links:
+      #links
+        .links
+          = link_to_add_association 'add link', f, :links
+        = f.submit 'Save'
+        .answer-links-manage
+          - answer.links.each do |link|
+            div id="link-#{link.id}"
+              p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"
+    = link_to 'Like', like_answer_path(answer), class: "voting", method: :post, remote: true, data: { type: :json, resource: "answer", id: answer.id }
+    = link_to 'Dislike', dislike_answer_path(answer), class: "voting", method: :post, remote: true, data: { type: :json, resource: "answer", id: answer.id }
+    div id="answer-rating-#{answer.id}"
+      = answer.rating
+    div id="answer-error-#{answer.id}"

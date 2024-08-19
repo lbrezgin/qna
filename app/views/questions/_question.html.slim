@@ -51,3 +51,10 @@ p= @question.body
       - @question.links.each do |link|
         div id="link-#{link.id}"
           p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"
+
+= link_to 'Like', like_question_path(@question), class: "voting", method: :post, remote: true, data: { type: :json, resource: "question", id: @question.id }
+= link_to 'Dislike', dislike_question_path(@question),class: "voting", method: :post, remote: true, data: { type: :json, resource: "question", id: @question.id }
+div id="question-rating-#{@question.id}"
+  = @question.rating
+div id="question-error-#{@question.id}"
+

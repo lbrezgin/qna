@@ -1,8 +1,8 @@
 .question
   = render @question
 
-.question-errors
-  = render 'shared/errors', resource: @question
+  .question-errors
+    = render 'shared/errors', resource: @question
 
 .answers
   = render @answers
