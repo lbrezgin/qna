@@ -1,10 +1,17 @@
 div id="answer-#{answer.id}" class="answer"
-  p= answer.body
-  = "Best" if answer.best
+  - if answer.best
+    p class="best-answer" = answer.body
+    p class="opinion" = "(Best answer by question's author opinion)"
+  - else
+    p= answer.body
+
   - if user_signed_in? && answer.body && current_user.author_of?(answer)
     p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     p= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+
+  - if current_user && current_user.author_of?(answer.question)
     p= link_to 'Choose', mark_as_best_answer_path(answer), method: :patch, remote: true
+
   - if answer.files.attached?
     - answer.files.each do |file|
       p= link_to file.filename.to_s, url_for(file)

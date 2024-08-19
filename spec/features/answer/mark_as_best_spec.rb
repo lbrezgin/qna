@@ -17,7 +17,7 @@ feature 'User can choose the best answer', %q{
       visit question_path(question)
       click_on 'Choose'
 
-      expect(page).to have_content 'Best' 
+      expect(page).to have_content '(Best answer by question\'s author opinion)'
     end
 
     scenario "tries to choose best answer for stranger's question", js: true do

@@ -2,24 +2,29 @@ h1= @question.title
 p= @question.body
 
 - if @question.files.attached?
-  - @question.files.each do |file|
-    p= link_to file.filename.to_s, url_for(file)
+  .attachments
+    h3 Attachments:
+    ul
+      - @question.files.each do |file|
+        li= link_to file.filename.to_s, url_for(file)
 
-.links
-  p Links:
-  ul
-    - @question.links.each do |link|
-      li= link_to link.name, link.url
-      - if link.gist?
-        div.gist-content data-gist-id=link.get_id_from_url(link.url)
+- if @question.links.any?
+  .links
+    h3 Links:
+    ul
+      - @question.links.each do |link|
+        li= link_to link.name, link.url
+        - if link.gist?
+          div.gist-content data-gist-id=link.get_id_from_url(link.url)
 
-.reward
-  h1 Reward:
-  ul
-    li
-      - if @question.reward
-        p= @question.reward.title
-        = image_tag(@question.reward.image)
+- if @question.reward
+  .reward
+    h3 Reward:
+    ul
+      li
+        - if @question.reward
+          p= @question.reward.title
+          p= image_tag(@question.reward.image, width: 100, height: 100)
 
 - if user_signed_in? && current_user.author_of?(@question)
   p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: @question.id }

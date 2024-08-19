@@ -2,6 +2,30 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 .question {
-  border-bottom-style: solid;
-  border-bottom-color: #999999;
+  padding: 20px;
+  margin: 20px;
+  position: relative;
+  overflow: visible;
+}
+
+.question::after {
+  border-radius: 50px;
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff007a, #00d4ff, #ff007a);
+  background-size: 200% 100%;
+  animation: moveGradient 3s linear infinite;
+}
+
+@keyframes moveGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 0%;
+  }
 }
