@@ -25,19 +25,13 @@ module Voted
 
   def prepare_vote(type)
     respond_to do |format|
-      if current_user
-        if current_user.author_of?(@entity)
-          format.json do
-            render json: { error: "You can't vote for your own #{model_klass.to_s.downcase}" }
-          end
-        else
-          @entity.make_vote(current_user, type)
-          format.json { render json: @entity.rating }
+      if current_user.author_of?(@entity)
+        format.json do
+          render json: { error: "You can't vote for your own #{model_klass.to_s.downcase}" }
         end
       else
-        format.json do
-          render json: { error: "You need to sign in or sign up before continuing." }
-        end
+        @entity.make_vote(current_user, type)
+        format.json { render json: @entity.rating }
       end
     end
   end
