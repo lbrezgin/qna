@@ -1,17 +1,7 @@
-doctype html
-html
-  body
-    table
-      thead
-        tr
-          th Title
-          th Body
-      tbody
-        - @questions.each do |question|
-          tr
-            td= question.title
-            td= question.body
-            td= link_to 'Show', question_path(question)
+#questions
+  - @questions.each do |question|
+    h2= link_to question.title, question_path(question)
+
 -if current_user
   p= link_to 'Ask question', new_user_question_path(current_user)
   p= link_to "Sign out", destroy_user_session_path, method: :delete
@@ -19,5 +9,3 @@ html
 -else
   p= 'You need to sign in to write question'
   p= link_to 'Sign in', new_user_session_path
-
-

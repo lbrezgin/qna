@@ -1,36 +1,36 @@
-h1= @question.title
-p= @question.body
+h1= question.title
+p= question.body
 
-- if @question.files.attached?
+- if question.files.attached?
   .attachments
     h3 Attachments:
     ul
-      - @question.files.each do |file|
+      - question.files.each do |file|
         li= link_to file.filename.to_s, url_for(file)
 
-- if @question.links.any?
+- if question.links.any?
   .links
     h3 Links:
     ul
-      - @question.links.each do |link|
+      - question.links.each do |link|
         li= link_to link.name, link.url
         - if link.gist?
           div.gist-content data-gist-id=link.get_id_from_url(link.url)
 
-- if @question.reward
+- if question.reward
   .reward
     h3 Reward:
     ul
       li
-        - if @question.reward
-          p= @question.reward.title
-          p= image_tag(@question.reward.image, width: 100, height: 100)
+        - if question.reward
+          p= question.reward.title
+          p= image_tag(question.reward.image, width: 100, height: 100)
 
-- if user_signed_in? && current_user.author_of?(@question)
-  p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: @question.id }
-  p= link_to 'Delete', question_path(@question), method: :delete
+- if user_signed_in? && current_user.author_of?(question)
+  p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
+  p= link_to 'Delete', question_path(question), method: :delete
 
-  = form_with model: @question, class: 'hidden', html: { id: "edit-question-#{@question.id}"}, local: false do |f|
+  = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}"}, local: false do |f|
     .field
       = f.label :title, 'New title'
       br
@@ -44,7 +44,7 @@ p= @question.body
       br
       = f.file_field :files, multiple: true, direct_upload: true
     .field
-      - @question.files.each do |file|
+      - question.files.each do |file|
         div id="attachment-#{file.id}"
           p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
     h3 Links:
@@ -53,13 +53,13 @@ p= @question.body
         = link_to_add_association 'add link', f, :links
     = f.submit 'Save'
     .question-links-manage
-      - @question.links.each do |link|
+      - question.links.each do |link|
         div id="link-#{link.id}"
           p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"
 
-= link_to 'Like', like_question_path(@question), class: "voting", method: :post, remote: true, data: { type: :json, resource: "question", id: @question.id }
-= link_to 'Dislike', dislike_question_path(@question),class: "voting", method: :post, remote: true, data: { type: :json, resource: "question", id: @question.id }
-div id="question-rating-#{@question.id}"
-  = @question.rating
-div id="question-error-#{@question.id}"
+= link_to 'Like', like_question_path(question), class: "voting", method: :post, remote: true, data: { type: :json, resource: "question", id: @question.id }
+= link_to 'Dislike', dislike_question_path(question),class: "voting", method: :post, remote: true, data: { type: :json, resource: "question", id: @question.id }
+div id="question-rating-#{question.id}"
+  = question.rating
+div id="question-error-#{question.id}"
 
