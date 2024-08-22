@@ -14,7 +14,7 @@ feature 'User can see his rewards', %q{
   scenario 'Authenticated user earn reward' do
     sign_in(user)
     visit question_path(question)
-    click_on 'Choose'
+    click_on 'Mark as best'
 
     visit user_rewards_path(user)
     expect(page).to have_content question.title

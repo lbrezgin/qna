@@ -15,7 +15,7 @@ feature 'User can choose the best answer', %q{
     scenario 'tries to choose best answer for his question', js: true do
       sign_in(author)
       visit question_path(question)
-      click_on 'Choose'
+      click_on 'Mark as best'
 
       expect(page).to have_content '(Best answer by question\'s author opinion)'
     end
@@ -24,7 +24,7 @@ feature 'User can choose the best answer', %q{
       sign_in(non_author)
       visit question_path(question)
 
-      expect(page).to_not have_link 'Choose'
+      expect(page).to_not have_link 'Mark as best'
     end
   end
 
@@ -32,6 +32,6 @@ feature 'User can choose the best answer', %q{
     sign_in(non_author)
     visit question_path(question)
 
-    expect(page).to_not have_link 'Choose'
+    expect(page).to_not have_link 'Mark as best'
   end
 end

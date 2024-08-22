@@ -14,9 +14,9 @@ feature 'User can edit questions links count', %q{
     sign_in(user)
 
     visit question_path(question)
-    click_on 'Edit question'
 
     within '.question' do
+      click_on 'Edit'
       click_on 'add link'
 
       fill_in 'Link name', with: 'Cats'

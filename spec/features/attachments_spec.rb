@@ -20,22 +20,30 @@ feature 'User can delete attached files', %q{
   end
 
   describe 'Authenticated author' do
-    scenario 'tries to delete attached file when edit question', js: true do
-      visit question_path(question)
+    context 'when question has attachments' do
+      scenario 'tries to delete attached file when edit question', js: true do
+        visit question_path(question)
 
-      click_on 'Edit question'
-      click_on 'X'
-      click_on 'Save'
-      expect(page).to_not have_link 'rails_helper.rb'
+        within '.question' do
+          click_on 'Edit'
+          click_on 'X'
+          click_on 'Save'
+        end
+        expect(page).to_not have_link 'rails_helper.rb'
+      end
     end
 
-    scenario 'tries to delete attached file when edit answer', js: true do
-      visit question_path(question)
+    context 'when answer has attachments' do
+      scenario 'tries to delete attached file when edit answer', js: true do
+        visit question_path(question)
 
-      click_on 'Edit'
-      click_on 'X'
-      click_on 'Save'
-      expect(page).to_not have_link 'spec_helper.rb'
+        within '.answer' do
+          click_on 'Edit'
+          click_on 'X'
+          click_on 'Save'
+        end
+        expect(page).to_not have_link 'spec_helper.rb'
+      end
     end
   end
 end

@@ -17,7 +17,7 @@ feature 'User can create question', %q{
     end
 
     scenario 'asks a question' do
-      within '.question' do
+      within '.question-in-new' do
         fill_in 'Title', with: 'Test question'
         fill_in 'Body', with: 'text text text'
       end
@@ -35,11 +35,12 @@ feature 'User can create question', %q{
     end
 
     scenario 'asks a question with attached files' do
-      within '.question' do
+      within '.question-in-new' do
         fill_in 'Title', with: 'Test question'
         fill_in 'Body', with: 'text text text'
-        attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
       end
+      attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
       click_on 'Ask'
 
       expect(page).to have_link 'rails_helper.rb'
@@ -60,10 +61,12 @@ feature 'User can create question', %q{
 
       Capybara.using_session('user') do
         click_on 'Ask question'
-        within '.question' do
+
+        within '.question-in-new' do
           fill_in 'Title', with: 'Test question'
           fill_in 'Body', with: 'text text text'
         end
+
         click_on 'Ask'
         expect(page).to have_content 'Test question'
         expect(page).to have_content 'text text text'

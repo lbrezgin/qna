@@ -22,7 +22,9 @@ feature 'User can edit his question', %q{
       sign_in(author)
 
       visit question_path(question)
-      click_on 'Edit question'
+      within '.question' do
+        click_on 'Edit'
+      end
     end
 
     scenario 'edits his question', js: true do

@@ -11,11 +11,12 @@ feature 'User can add reward when creating question', %q{
     sign_in(user)
     visit new_user_question_path(user)
 
-    within '.question' do
+    within '.question-in-new' do
       fill_in 'Title', with: 'Test title'
       fill_in 'Body', with: 'test body'
     end
   end
+
   scenario 'User adds reward when asks question' do
     within '.add-reward' do
       fill_in 'Title', with: 'Reward for best answer'

@@ -13,7 +13,7 @@ feature 'User can add links to question', %q{
     sign_in(user)
     visit new_user_question_path(user)
 
-    within '.question' do
+    within '.question-in-new' do
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
     end
