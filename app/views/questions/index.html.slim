@@ -1,11 +1,9 @@
-#questions
-  - @questions.each do |question|
-    h2= link_to question.title, question_path(question)
-
 -if current_user
-  p= link_to 'Ask question', new_user_question_path(current_user)
-  p= link_to "Sign out", destroy_user_session_path, method: :delete
+  p= button_to 'Ask question', new_user_question_path(current_user), method: :get, class: "button"
 
--else
-  p= 'You need to sign in to write question'
-  p= link_to 'Sign in', new_user_session_path
+.questions
+  - @questions.each do |question|
+    h2 class="question-in-index"= link_to question.title, question_path(question)
+
+
+

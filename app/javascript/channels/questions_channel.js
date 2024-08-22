@@ -7,7 +7,7 @@ $(document).on('turbolinks:load', function () {
             this.perform('follow');
         },
         received(data) {
-            $('#questions').append(`<h2><a href="questions/${data.id}">${data.title}</a></h2>`);
+            $('.questions').append(`<h2 class="question-in-index"><a href="questions/${data.id}">${data.title}</a></h2>`);
         }
     });
 });

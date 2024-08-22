@@ -1,0 +1,17 @@
+.navigation {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid;
+  border-bottom-color: #CFCFCF;
+  padding: 5px;
+}
+
+.nav-link {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.nav-link:hover {
+  background-color: #EBEBEB;
+  border-radius: 40px;
+}

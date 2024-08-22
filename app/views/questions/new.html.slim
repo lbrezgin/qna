@@ -1,33 +1,33 @@
 = render 'shared/errors', resource: @question
 
-= form_with model: [@user, @question], local: true do |f|
-  .question
-    .field
-      = f.label :title
-      br
-      = f.text_field :title
-    .field
-      = f.label :body
-      br
-      = f.text_area :body
-    .field
-      = f.label :files
-      br
-      = f.file_field :files, multiple: true, direct_upload: true
+= form_with model: [@user, @question], class: 'form', local: true do |f|
+  p
+    = f.label :title
+    br
+    = f.text_field :title
+  p
+    = f.label :body
+    br
+    = f.text_area :body
+  p
+    h2 = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
+
   .add-links
-    h3 Links:
+    h2 Links
     = f.fields_for :links do |link|
       = render 'link_fields', f: link
     .links
       = link_to_add_association 'add link', f, :links
   .add-reward
-    h3 Reward:
+    h2 Reward
     = f.fields_for :reward do |reward|
-      .field
+      p
         = reward.label :title
-        br= reward.text_field :title
-      .field
+        br
+        = reward.text_field :title
+      p
         = reward.label :image
         br
         = reward.file_field :image, direct_upload: true
-    = f.submit 'Ask'
+  = f.submit 'Ask', class: "button"
