@@ -25,7 +25,6 @@ div id="answer-#{answer.id}" class="answer"
 
   - if answer.best
     p class="opinion" = "(Best answer by question's author opinion)"
-  - else
 
   .actions
     - if user_signed_in? && answer.body && current_user.author_of?(answer)

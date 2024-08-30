@@ -5,6 +5,7 @@ class AnswersController < ApplicationController
   before_action :load_answer, only: [:show, :destroy, :update, :mark_as_best]
   before_action :load_question, only: [:new, :create]
 
+  after_action :publish_answer, only: :create
   def mark_as_best
     if current_user.author_of?(@answer.question)
       @answer.mark_as_best
@@ -56,4 +57,19 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body, :question_id,
                                    files: [], links_attributes: [:name, :url])
   end
+
+  def publish_answer
+    files = @answer.files.map { |file| file.record.body }
+    links = @answer.links.map { |link| [link.name, link.url, link.gist?] }
+
+    return if @answer.errors.any?
+    ActionCable.server.broadcast("questions/#{@answer.question_id}", {
+      answer: @answer,
+      question: @answer.question,
+      rating: @answer.rating,
+      files: files,
+      links: links
+    })
+  end
 end
+
