@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_answer, only: [:show, :destroy, :update, :mark_as_best]

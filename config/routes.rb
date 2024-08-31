@@ -9,9 +9,15 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :commentable do
+    member do
+      post :comment
+    end
+  end
+
   resources :users, shallow: true do
-    resources :questions, concerns: [:votable], shallow: true do
-      resources :answers, concerns: [:votable], shallow: true do
+    resources :questions, concerns: [:votable, :commentable], shallow: true do
+      resources :answers, concerns: [:votable, :commentable], shallow: true do
         member do
           patch :mark_as_best
         end
@@ -25,3 +31,4 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => '/cable'
 end
+

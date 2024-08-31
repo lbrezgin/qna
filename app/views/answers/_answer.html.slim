@@ -56,3 +56,22 @@ div id="answer-#{answer.id}" class="answer"
     ul
       - answer.files.each do |file|
         li= link_to file.filename.to_s, url_for(file)
+
+  -if user_signed_in?
+    div class="answer-#{answer.id}-comment-errors"
+
+    div class="new-answer-#{answer.id}-comment"
+      = form_with model: Comment.new, url: comment_answer_path(answer), local: false, method: :post do |f|
+        h1 Add comment
+        p
+          = f.label :content
+          br
+          = f.text_area :content
+        = f.submit 'Comment', class: "button"
+
+    div class="answer-#{answer.id}-comments"
+      h2 Comments
+      - answer.comments.each do |comment|
+        p= comment.content
+  -else
+    p You need to sign in or to leave a comment

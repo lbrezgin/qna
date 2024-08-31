@@ -1,0 +1,7 @@
+$('.question-comment-errors').html('<%= render 'shared/errors', resource: @comment %>');
+
+<% if @comment.persisted? %>
+  $('.question-comments').append('<p><%= @comment.content %></p>');
+  $('.new-question-comment #comment_content').val('');
+<% end %>
+

@@ -67,4 +67,21 @@ div id="question-error-#{question.id}"
           p= question.reward.title
           p= image_tag(question.reward.image, width: 100, height: 100)
 
+-if user_signed_in?
+  .question-comment-errors
 
+  .new-question-comment
+    = form_with model: Comment.new, url: comment_question_path(question), local: false, method: :post do |f|
+      h1 Add comment
+      p
+        = f.label :content
+        br
+        = f.text_area :content
+      = f.submit 'Comment', class: "button"
+
+  .question-comments
+    h2 Comments
+    - question.comments.each do |comment|
+      p= comment.content
+-else
+  p You need to sign in or to leave a comment
