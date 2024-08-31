@@ -68,10 +68,10 @@ div id="answer-#{answer.id}" class="answer"
           br
           = f.text_area :content
         = f.submit 'Comment', class: "button"
-
-    div class="answer-#{answer.id}-comments"
-      h2 Comments
-      - answer.comments.each do |comment|
-        p= comment.content
   -else
     p You need to sign in or to leave a comment
+
+  div class="answer-#{answer.id}-comments"
+    h2 Comments
+    - answer.comments.each do |comment|
+      p= comment.content
