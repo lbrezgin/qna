@@ -10,9 +10,7 @@ Rails.application.routes.draw do
   end
 
   concern :commentable do
-    member do
-      post :comment
-    end
+    resources :comments, only: [:create]
   end
 
   resources :users, shallow: true do

@@ -1,7 +1,0 @@
-$('.answer-' + <%= @comment.commentable.id %> + '-comment-errors').html('<%= render 'shared/errors', resource: @comment %>');
-
-<% if @comment.persisted? %>
-  $('.answer-' + <%= @comment.commentable.id %> + '-comments').append('<p><%= @comment.content %></p>');
-  $('.new-answer-' + <%= @comment.commentable.id %> + '-comment #comment_content').val('');
-<% end %>
-

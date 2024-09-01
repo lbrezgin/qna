@@ -71,7 +71,7 @@ div id="question-error-#{question.id}"
   .question-comment-errors
 
   .new-question-comment
-    = form_with model: Comment.new, url: comment_question_path(question), local: false, method: :post do |f|
+    = form_with model: Comment.new, url: question_comments_path(question), local: false, method: :post do |f|
       h1 Add comment
       p
         = f.label :content

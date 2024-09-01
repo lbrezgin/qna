@@ -1,0 +1,19 @@
+<% if @comment.commentable_type == "Question" %>
+  $('.question-comment-errors').html('<%= render 'shared/errors', resource: @comment %>');
+
+  <% if @comment.persisted? %>
+    $('.question-comments').append('<p><%= @comment.content %></p>');
+    $('.new-question-comment #comment_content').val('');
+  <% end %>
+<% elsif @comment.commentable_type == "Answer"%>
+  $('.answer-' + <%= @comment.commentable.id %> + '-comment-errors').html('<%= render 'shared/errors', resource: @comment %>');
+
+  <% if @comment.persisted? %>
+    $('.answer-' + <%= @comment.commentable.id %> + '-comments').append('<p><%= @comment.content %></p>');
+    $('.new-answer-' + <%= @comment.commentable.id %> + '-comment #comment_content').val('');
+  <% end %>
+<% end %>
+
+
+
+
