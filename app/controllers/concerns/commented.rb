@@ -19,7 +19,7 @@ module Commented
     return if @comment.errors.any?
     case @comment.commentable_type
     when "Question"
-      ActionCable.server.broadcast("questions/#{Question.find(params[:id]).id}/comment", @comment)
+      ActionCable.server.broadcast("questions/#{params[:id]}/comment", @comment)
     when "Answer"
       ActionCable.server.broadcast("questions/#{Answer.find(params[:id]).question.id}/answers/comment", @comment)
     end
