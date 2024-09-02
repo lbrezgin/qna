@@ -1,7 +1,20 @@
 // Place all the styles related to the Questions controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+.questions {
+  margin-top: 40px;
+}
+
+.question-in-index {
+  font-size: 24px;
+  border-bottom: 1px solid;
+  border-bottom-color: #CFCFCF;
+  padding-bottom: 20px;
+}
+
 .question {
-  border-bottom-style: solid;
-  border-bottom-color: #999999;
+  font-size: 15px;
+  border-bottom: 1px solid;
+  border-bottom-color: #CFCFCF;
+  padding-bottom: 20px;
 }

@@ -3,16 +3,22 @@
   <head>
     <title>Qna</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= include_gon %>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= action_cable_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <%= render 'shared/nav' %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <div class="page-content">
+      <%= yield %>
+    </div>
   </body>
 </html>

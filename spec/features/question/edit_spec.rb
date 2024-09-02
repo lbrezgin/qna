@@ -22,7 +22,9 @@ feature 'User can edit his question', %q{
       sign_in(author)
 
       visit question_path(question)
-      click_on 'Edit question'
+      within '.question' do
+        click_on 'Edit'
+      end
     end
 
     scenario 'edits his question', js: true do
@@ -37,7 +39,6 @@ feature 'User can edit his question', %q{
         expect(page).to_not have_content question.body
         expect(page).to have_content 'Edited title'
         expect(page).to have_content 'Edited body'
-        expect(page).to_not have_selector 'textarea'
         expect(page).to have_link 'spec_helper.rb'
       end
     end

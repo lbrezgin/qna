@@ -1,0 +1,14 @@
+.voting-container {
+  display: flex;
+}
+
+.voting, .rating {
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.voting:hover {
+  background-color: #EBEBEB;
+  border-radius: 40px;
+}
+

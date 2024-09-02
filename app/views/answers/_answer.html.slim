@@ -1,46 +1,77 @@
 div id="answer-#{answer.id}" class="answer"
-  p= answer.body
-  = "Best" if answer.best
-  - if user_signed_in? && answer.body && current_user.author_of?(answer)
-    p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-    p= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
-    p= link_to 'Choose', mark_as_best_answer_path(answer), method: :patch, remote: true
-  - if answer.files.attached?
-    - answer.files.each do |file|
-      p= link_to file.filename.to_s, url_for(file)
-  .links
-    p Links:
-    ul
-      - answer.links.each do |link|
-        li= link_to link.name, link.url
-        - if link.gist?
-          div.gist-content data-gist-id=link.get_id_from_url(link.url)
-
   - if answer.body
-    =form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}"}, local: false do |f|
-      .field
+    = form_with model: answer, class: 'hidden form', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
+      h1 Editing
+      p
         = f.label :body, 'Your answer'
         br
         = f.text_area :body
-      .field
-        = f.label :files
-        br
+      p
+        h2= f.label :files
         = f.file_field :files, multiple: true, direct_upload: true
-      .field
+      p
         - answer.files.each do |file|
           div id="attachment-#{file.id}"
             p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
-      h3 Links:
+      h2 Links
       #links
         .links
           = link_to_add_association 'add link', f, :links
-        = f.submit 'Save'
         .answer-links-manage
           - answer.links.each do |link|
             div id="link-#{link.id}"
               p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"
+      = f.submit 'Save', class: "button"
+
+  - if answer.best
+    p class="opinion" = "(Best answer by question's author opinion)"
+
+  .actions
+    - if user_signed_in? && answer.body && current_user.author_of?(answer)
+      = link_to 'Edit', '#', class: 'edit-answer-link link-button', data: { answer_id: answer.id }
+      = link_to 'Delete', answer_path(answer), class: 'link-button', method: :delete, remote: true
+    - if current_user && current_user.author_of?(answer.question)
+      = link_to 'Mark as best', mark_as_best_answer_path(answer), class: 'link-button', method: :patch, remote: true
+
+  p= answer.body
+
+  div.voting-container
     = link_to 'Like', like_answer_path(answer), class: "voting", method: :post, remote: true, data: { type: :json, resource: "answer", id: answer.id }
-    = link_to 'Dislike', dislike_answer_path(answer), class: "voting", method: :post, remote: true, data: { type: :json, resource: "answer", id: answer.id }
-    div id="answer-rating-#{answer.id}"
+    div class="rating" id="answer-rating-#{answer.id}"
       = answer.rating
-    div id="answer-error-#{answer.id}"
+    = link_to 'Dislike', dislike_answer_path(answer), class: "voting", method: :post, remote: true, data: { type: :json, resource: "answer", id: answer.id }
+  div id="answer-error-#{answer.id}"
+
+  - if answer.links.any?
+    .links
+      h2 Links
+      ul
+        - answer.links.each do |link|
+          li= link_to link.name, link.url
+          - if link.gist?
+            div.gist-content data-gist-id=link.get_id_from_url(link.url)
+
+  - if answer.files.attached?
+    h2 Attachments
+    ul
+      - answer.files.each do |file|
+        li= link_to file.filename.to_s, url_for(file)
+
+  -if user_signed_in?
+    div class="answer-#{answer.id}-comment-errors"
+
+    div class="new-answer-#{answer.id}-comment"
+      = form_with model: Comment.new, url: answer_comments_path(answer), local: false, method: :post do |f|
+        h1 Add comment
+        p
+          = f.label :content
+          br
+          = f.text_area :content
+        = f.submit 'Comment', class: "button"
+  -else
+    p You need to sign in or to leave a comment
+
+  div class="answer-#{answer.id}-comments"
+    h2 Comments
+    - answer.comments.each do |comment|
+      p= comment.content

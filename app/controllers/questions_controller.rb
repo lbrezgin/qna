@@ -5,6 +5,7 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :load_user, only: [:new, :create]
 
+  after_action :publish_question, only: :create
   def index
     @questions = Question.all
   end
@@ -13,6 +14,8 @@ class QuestionsController < ApplicationController
     @answer = @question.answers.new
     @answers = @question.answers.sort_by_best.order(:id)
     @answer.links.new
+
+    gon.currentUser = current_user
   end
 
   def new
@@ -50,6 +53,10 @@ class QuestionsController < ApplicationController
   end
 
   private
+  def publish_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast('questions', @question)
+  end
 
   def load_user
     @user = User.find(params[:user_id])
@@ -65,5 +72,6 @@ class QuestionsController < ApplicationController
                                      reward_attributes: [:title, :image])
   end
 end
+
 
 

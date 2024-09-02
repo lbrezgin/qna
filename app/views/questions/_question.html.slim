@@ -1,60 +1,87 @@
-h1= @question.title
-p= @question.body
-
-- if @question.files.attached?
-  - @question.files.each do |file|
-    p= link_to file.filename.to_s, url_for(file)
-
-.links
-  p Links:
-  ul
-    - @question.links.each do |link|
-      li= link_to link.name, link.url
-      - if link.gist?
-        div.gist-content data-gist-id=link.get_id_from_url(link.url)
-
-.reward
-  h1 Reward:
-  ul
-    li
-      - if @question.reward
-        p= @question.reward.title
-        = image_tag(@question.reward.image)
-
-- if user_signed_in? && current_user.author_of?(@question)
-  p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: @question.id }
-  p= link_to 'Delete', question_path(@question), method: :delete
-
-  = form_with model: @question, class: 'hidden', html: { id: "edit-question-#{@question.id}"}, local: false do |f|
-    .field
-      = f.label :title, 'New title'
-      br
-      = f.text_field :title
-    .field
-      = f.label :body, 'New body'
-      br
-      = f.text_area :body
-    .field
-      = f.label :files
-      br
-      = f.file_field :files, multiple: true, direct_upload: true
-    .field
-      - @question.files.each do |file|
-        div id="attachment-#{file.id}"
-          p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
-    h3 Links:
+= form_with model: question, class: 'hidden form', html: { id: "edit-question-#{question.id}"}, local: false do |f|
+  h1 Editing
+  p
+    = f.label :title, 'New title'
+    br
+    = f.text_field :title
+  p
+    = f.label :body, 'New body'
+    br
+    = f.text_area :body
+  p
+    h2 = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
+    - question.files.each do |file|
+      div id="attachment-#{file.id}"
+        p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
+  p
+    h2 Links
     #links
       .links
         = link_to_add_association 'add link', f, :links
-    = f.submit 'Save'
-    .question-links-manage
-      - @question.links.each do |link|
-        div id="link-#{link.id}"
+      .question-links-manage
+        - question.links.each do |link|
+          div id="link-#{link.id}"
           p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"
+    br
+  = f.submit 'Save', class: "button"
 
-= link_to 'Like', like_question_path(@question), class: "voting", method: :post, remote: true, data: { type: :json, resource: "question", id: @question.id }
-= link_to 'Dislike', dislike_question_path(@question),class: "voting", method: :post, remote: true, data: { type: :json, resource: "question", id: @question.id }
-div id="question-rating-#{@question.id}"
-  = @question.rating
-div id="question-error-#{@question.id}"
+h1= question.title
 
+- if user_signed_in? && current_user.author_of?(question)
+  = link_to 'Edit', '#', class: 'edit-question-link link-button', data: { question_id: question.id }
+  = link_to 'Delete', question_path(question), class: 'link-button', method: :delete
+
+p= question.body
+
+div.voting-container
+  = link_to "Like", like_question_path(question), class: "voting", method: :post, remote: true, data: { type: :json, resource: "question", id: @question.id }
+  div class="rating" id="question-rating-#{question.id}"
+    = question.rating
+  = link_to "Dislike", dislike_question_path(question),class: "voting", method: :post, remote: true, data: { type: :json, resource: "question", id: @question.id }
+div id="question-error-#{question.id}"
+
+- if question.links.any?
+  .links
+    h2 Links
+    ul
+      - question.links.each do |link|
+        li= link_to link.name, link.url
+        - if link.gist?
+          div.gist-content data-gist-id=link.get_id_from_url(link.url)
+
+- if question.files.attached?
+  .attachments
+    h2 Attachments
+    ul
+      - question.files.each do |file|
+        li= link_to file.filename.to_s, url_for(file)
+
+
+- if question.reward
+  .reward
+    h2 Reward
+    ul
+      li
+        - if question.reward
+          p= question.reward.title
+          p= image_tag(question.reward.image, width: 100, height: 100)
+
+-if user_signed_in?
+  .question-comment-errors
+
+  .new-question-comment
+    = form_with model: Comment.new, url: question_comments_path(question), local: false, method: :post do |f|
+      h1 Add comment
+      p
+        = f.label :content
+        br
+        = f.text_area :content
+      = f.submit 'Comment', class: "button"
+-else
+  p You need to sign in or to leave a comment
+
+.question-comments
+  h2 Comments
+  - question.comments.each do |comment|
+    p= comment.content

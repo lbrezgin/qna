@@ -1,0 +1,8 @@
+.navigation
+    = image_tag("logo", width: 250, high: 250)
+    - if current_user
+      = link_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link"
+      = link_to 'Questions', user_questions_path(current_user), class: "nav-link"
+      = link_to 'Rewards', user_rewards_path(current_user), class: "nav-link"
+    - else
+      = link_to 'Sign in', new_user_session_path, class: "nav-link"

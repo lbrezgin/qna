@@ -7,6 +7,7 @@ feature 'User can create answer', %q{
 } do
 
   given(:user) { create(:user) }
+  given(:guest) { create(:user) }
   given(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
@@ -35,6 +36,34 @@ feature 'User can create answer', %q{
       click_on 'Answer'
       expect(page).to have_link 'rails_helper.rb'
       expect(page).to have_link 'spec_helper.rb'
+    end
+  end
+
+  context 'multiply sessions' do
+    scenario 'answer appears on another user\'s page' do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Body', with: 'Test answer'
+
+        click_on 'Answer'
+        expect(page).to have_content 'Test answer'
+        expect(page).to have_link 'Like'
+        expect(page).to have_link 'Dislike'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Test answer'
+        expect(page).to have_link 'Like'
+        expect(page).to have_link 'Dislike'
+      end
     end
   end
 

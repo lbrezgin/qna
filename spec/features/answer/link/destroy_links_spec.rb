@@ -15,11 +15,14 @@ feature 'User can destroy answers links', %q{
     sign_in(user)
     visit question_path(question)
 
-    click_on 'Edit'
-    within '.answer-links-manage' do
-      click_on 'X'
+    within '.answer' do
+      click_on 'Edit'
+      within '.answer-links-manage' do
+        click_on 'X'
+      end
+      click_on 'Save'
     end
-    click_on 'Save'
     expect(page).to_not have_link 'Cats', href: link
   end
 end
+
