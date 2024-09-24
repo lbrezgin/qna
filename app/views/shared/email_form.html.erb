@@ -1,0 +1,10 @@
+<%= form_with url: get_email_path, method: :post do |f| %>
+  <div class="field">
+    <%= f.label :email, "Email" %>
+    <%= f.email_field :email, required: true %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit 'Submit' %>
+  </div>
+<% end %>

@@ -25,4 +25,10 @@ feature 'User can sign in', %q{
 
     expect(page).to have_content 'Invalid Email or password.'
   end
+
+  context 'User tries to sign in using third party services' do
+    scenario 'When github' do
+
+    end
+  end
 end

@@ -11,6 +11,27 @@ RSpec.describe User, type: :model do
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
 
+  describe '.create_authorization' do
+    let!(:user) { create(:user) }
+    let!(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123') }
+
+    it 'creates new authorization' do
+      user.create_authorization(auth[:provider], auth[:uid])
+
+      expect(user.authorizations.count).to eq 1
+    end
+  end
+
+  describe '.have_authorization' do
+    let!(:user) { create(:user) }
+    let!(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123') }
+    let!(:authorization) { create(:authorization, user: user, provider: auth[:provider], uid: auth[:uid]) }
+
+    it 'returns user, if he already have authorization' do
+      expect(User.have_authorization(auth[:provider], auth[:uid])).to eq user
+    end
+  end
+
   describe '.author_of?' do
     let(:author) { create(:user) }
     let(:question) { create(:question, user: author) }
@@ -34,9 +55,9 @@ RSpec.describe User, type: :model do
     let!(:service) { double('FindForOauth') }
 
     it 'calls FindForOauth' do
-      expect(FindForOauth).to receive(:new).with(auth).and_return(service)
+      expect(FindForOauth).to receive(:new).with(auth[:provider], auth[:uid], user.email).and_return(service)
       expect(service).to receive(:call)
-      User.find_for_oauth(auth)
+      User.find_for_oauth(auth[:provider], auth[:uid], user.email)
     end
   end
 end
