@@ -1,6 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 require 'validate_url/rspec_matcher'
+require 'capybara/email/rspec'
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
@@ -42,6 +43,8 @@ end
 
 Capybara.default_driver    = :chrome
 Capybara.javascript_driver = :chrome
+Capybara.server_host = '127.0.0.1'
+Capybara.server_port = 3001
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
@@ -86,5 +89,6 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
 
 
