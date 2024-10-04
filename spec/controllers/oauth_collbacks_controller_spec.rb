@@ -1,4 +1,4 @@
-require 'rails_helper'
+пшеrequire 'rails_helper'
 
 RSpec.describe OauthCallbacksController, type: :controller do
   before do
@@ -48,16 +48,6 @@ RSpec.describe OauthCallbacksController, type: :controller do
     end
   end
 
-  describe "Get email" do
-    it "assigns email to email variable" do
-
-    end
-
-    it "authenticated user" do
-
-    end
-  end
-
   describe 'Twitter' do
     let!(:oauth_data) { {'provider' => 'twitter', 'uid' => '123'} }
 
@@ -72,7 +62,6 @@ RSpec.describe OauthCallbacksController, type: :controller do
       allow(request.env).to receive(:[]).and_call_original
       allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_data)
       expect(User).to receive(:prepare_authentication).with(oauth_data)
-
     end
 
     context 'user exists' do

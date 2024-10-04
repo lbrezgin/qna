@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
+
   devise_scope :user do
     post '/get_email', to: 'oauth_callbacks#get_email', as: :get_email
   end
