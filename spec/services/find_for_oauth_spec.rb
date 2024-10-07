@@ -18,13 +18,6 @@ RSpec.describe FindForOauth do
         expect { subject.call }.to change(user.authorizations, :count).by(1)
       end
 
-      it 'creates authorization with provider and uid' do
-        authorization = subject.call.authorizations.first
-
-        expect(authorization.provider).to eq auth.provider
-        expect(authorization.uid).to eq auth.uid
-      end
-
       it 'returns the user' do
         expect(subject.call).to eq user
       end
@@ -54,8 +47,7 @@ RSpec.describe FindForOauth do
       it 'creates authorization with provider and uid' do
         authorization = subject.call.authorizations.first
 
-        expect(authorization.provider).to eq auth.provider
-        expect(authorization.uid).to eq auth.uid
+        expect(authorization).to have_attributes(provider: auth.provider, uid: auth.uid)
       end
     end
   end

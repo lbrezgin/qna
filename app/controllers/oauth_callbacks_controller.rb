@@ -7,10 +7,10 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
     prepare_authentication(request.env['omniauth.auth'])
   end
 
-  def get_email
+  def create_authorization
     @email = params[:email]
-
     @user = User.find_for_oauth(session[:provider], session[:uid], @email)
+
     authenticate(@user, session[:provider])
   end
 
@@ -21,7 +21,8 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
     session[:uid] = request[:uid]
     @email = request[:info][:email]
 
-    @user = User.have_authorization(session[:provider], session[:uid])
+    authorization = Authorization.where(provider: session[:provider], uid: session[:uid].to_s).first
+    @user = authorization.user if authorization
 
     if @user
       authenticate(@user, session[:provider])
@@ -44,6 +45,3 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 end
-
-
-

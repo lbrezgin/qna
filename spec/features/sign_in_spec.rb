@@ -42,8 +42,3 @@ feature 'User can sign in', %q{
     end
   end
 end
-
-
-
-
-

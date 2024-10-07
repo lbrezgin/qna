@@ -19,13 +19,4 @@ class User < ApplicationRecord
   def self.find_for_oauth(provider, uid, email)
     FindForOauth.new(provider, uid, email).call
   end
-
-  def create_authorization(provider, uid)
-    self.authorizations.create(provider: provider, uid: uid.to_s) if self
-  end
-
-  def self.have_authorization(provider, uid)
-    authorization = Authorization.where(provider: provider, uid: uid.to_s).first
-    return authorization.user if authorization
-  end
 end

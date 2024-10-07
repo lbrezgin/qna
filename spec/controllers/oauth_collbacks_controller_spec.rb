@@ -15,15 +15,12 @@ RSpec.describe OauthCallbacksController, type: :controller do
     end
 
     it 'assigns user to @user' do
-      allow(User).to receive(:have_authorization).and_return(user)
-
       get :github
       expect(assigns(:user)).to eq user
     end
 
     it 'authenticates user' do
       get :github
-
       expect(response).to redirect_to root_path
     end
   end
@@ -35,15 +32,12 @@ RSpec.describe OauthCallbacksController, type: :controller do
     end
 
     it 'assigns user to @user' do
-      allow(User).to receive(:have_authorization).and_return(user)
-
       get :twitter
       expect(assigns(:user)).to eq user
     end
 
     it 'authenticates user' do
       get :twitter
-
       expect(response).to redirect_to root_path
     end
   end
