@@ -6,7 +6,7 @@ feature 'User can sign in', %q{
   I'd like to be able to sign in
 } do
 
-  given(:user) { create(:user) }
+  given!(:user) { create(:user, email: "test@gmail.com", confirmed_at: Time.now) }
 
   background { visit new_user_session_path }
 
@@ -24,5 +24,21 @@ feature 'User can sign in', %q{
     click_on 'Log in'
 
     expect(page).to have_content 'Invalid Email or password.'
+  end
+
+  context 'User tries to sign in using third party services' do
+    scenario 'When twitter' do
+      click_on 'Sign in with Twitter'
+
+      fill_in 'Email', with: user.email
+      click_on 'Submit'
+
+      expect(page).to have_content 'Successfully authenticated from twitter account.'
+    end
+
+    scenario 'When github' do
+      click_on 'Sign in with GitHub'
+      expect(page).to have_content 'Successfully authenticated from github account.'
+    end
   end
 end

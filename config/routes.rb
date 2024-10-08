@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
+
+  devise_scope :user do
+    post '/authorizations', to: 'oauth_callbacks#create_authorization'
+  end
+
   root to: "questions#index"
 
   concern :votable do
@@ -29,4 +34,3 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => '/cable'
 end
-

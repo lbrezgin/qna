@@ -10,12 +10,20 @@ feature 'User can register', %q{
     scenario 'tries to register' do
       visit new_user_registration_path
 
-      fill_in 'Email', with: 'lewickbrez@gmail.com'
-      fill_in 'Password', with: '123456'
-      fill_in 'Password confirmation', with: '123456'
+      fill_in 'Email', with: 'test@gmail.com'
+      fill_in 'Password', with: 'qwerty123456'
+      fill_in 'Password confirmation', with: 'qwerty123456'
       click_on 'Sign up'
 
-      expect(page).to have_content 'Welcome! You have signed up successfully.'
+      open_email('test@gmail.com')
+      current_email.click_link 'Confirm my account'
+
+      visit new_user_session_path
+      fill_in 'Email', with: 'test@gmail.com'
+      fill_in 'Password', with: 'qwerty123456'
+      click_on 'Log in'
+
+      expect(page).to have_content 'Signed in successfully.'
     end
   end
 
@@ -34,3 +42,5 @@ feature 'User can register', %q{
     end
   end
 end
+
+
