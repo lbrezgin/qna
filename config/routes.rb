@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
   devise_scope :user do
-    post '/create_authorization', to: 'oauth_callbacks#create_authorization', as: :create_authorization
+    post '/authorizations', to: 'oauth_callbacks#create_authorization'
   end
 
   root to: "questions#index"
