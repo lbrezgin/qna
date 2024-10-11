@@ -28,7 +28,7 @@
 
 h1= question.title
 
-- if user_signed_in? && current_user.author_of?(question)
+- if can?(:update, @question) && can?(:destroy, @question)
   = link_to 'Edit', '#', class: 'edit-question-link link-button', data: { question_id: question.id }
   = link_to 'Delete', question_path(question), class: 'link-button', method: :delete
 

@@ -6,11 +6,12 @@ class AnswersController < ApplicationController
   before_action :load_question, only: [:new, :create]
 
   after_action :publish_answer, only: :create
+
+  authorize_resource
+
   def mark_as_best
-    if current_user.author_of?(@answer.question)
-      @answer.mark_as_best
-      @question = @answer.question
-    end
+    @answer.mark_as_best
+    @question = @answer.question
   end
 
   def index
@@ -31,16 +32,12 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if current_user.author_of?(@answer)
-      @answer.update(answer_params)
-      @question = @answer.question
-    end
+    @answer.update(answer_params)
+    @question = @answer.question
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-    end
+    @answer.destroy
   end
 
   private
@@ -72,4 +69,5 @@ class AnswersController < ApplicationController
     })
   end
 end
+
 
