@@ -2,6 +2,7 @@
 require 'spec_helper'
 require 'validate_url/rspec_matcher'
 require 'capybara/email/rspec'
+require 'cancan/matchers'
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
