@@ -2,6 +2,8 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   after_action :publish_comment
 
+  authorize_resource
+
   def create
     @comment = current_user.comments.build(comment_params)
     @comment.commentable = find_commentable

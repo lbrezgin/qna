@@ -1,5 +1,6 @@
 -if current_user
-  p= button_to 'Ask question', new_user_question_path(current_user), method: :get, class: "button"
+  -if can?(:create, Question)
+    p= button_to 'Ask question', new_user_question_path(current_user), method: :get, class: "button"
 - else
   p= "You need to sign in to write question"
 .questions
