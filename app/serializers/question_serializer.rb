@@ -1,9 +1,7 @@
 class QuestionSerializer < ActiveModel::Serializer
-  attributes :id, :title, :body, :created_at, :updated_at, :short_title
-  has_many :answers
-  belongs_to :user
+  attributes :id, :title, :body, :user_id, :created_at, :updated_at, :files
 
-  def short_title
-    object.title.truncate(7)
-  end
+  has_many :comments
+  has_many :files, serializer: FileSerializer
+  has_many :links
 end
