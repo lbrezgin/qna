@@ -71,4 +71,94 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'POST /api/v1/questions' do
+    let(:api_path) { '/api/v1/questions' }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+    end
+
+    context 'authorized' do
+      let(:user) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+      let(:api_response) { json['question'] }
+
+      context 'request without params' do
+        before { post api_path, params: { access_token: access_token.token, question: { title: nil, body: nil }, user_id: user }}
+
+        it 'returns error message if no params was given' do
+          expect(json).to eq ["Title can't be blank", "Body can't be blank"]
+        end
+      end
+
+      context 'request with valid params' do
+        before { post api_path, params: { access_token: access_token.token, question: { title: "new title", body: "new body"}, user_id: user }}
+
+        it 'returns question' do
+          expect(api_response['title']).to eq "new title"
+          expect(api_response['body']).to eq "new body"
+          expect(api_response['user_id']).to eq user.id.as_json
+        end
+      end
+    end
+  end
+
+
+  describe 'PATCH /api/v1/questions/:id' do
+    let(:user) { create(:user) }
+    let!(:question) { create(:question, user: user) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+      let(:api_response) { json['question'] }
+
+      context 'request without params' do
+        before { patch api_path, params: {id: question, access_token: access_token.token, question: { title: nil, body: nil }, user_id: user }}
+
+        it 'don\'t change question if params are not valid ' do
+          expect(api_response['title']).to eq question.title.as_json
+          expect(api_response['body']).to eq question.body.as_json
+        end
+      end
+
+      context 'request with valid params' do
+        before { patch api_path, params: {id: question, access_token: access_token.token, question: { title: 'updated title', body: 'updated body' }, user_id: user }}
+
+        it 'returns question' do
+          expect(api_response['title']).to eq "updated title"
+          expect(api_response['body']).to eq "updated body"
+          expect(api_response['user_id']).to eq user.id.as_json
+        end
+      end
+    end
+  end
+
+  describe 'DELETE /api/v1/questions/:id' do
+    let(:user) { create(:user) }
+    let!(:question) { create(:question, user: user) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+      let(:api_response) { json['question'] }
+
+      context 'request with valid params' do
+        before { delete api_path, params: {id: question, access_token: access_token.token }}
+
+        it 'delete question' do
+          expect(Question.where(id: question.id)).to eq []
+        end
+      end
+    end
+  end
 end
