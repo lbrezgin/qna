@@ -32,6 +32,10 @@ gem 'activemodel', '6.1.7.8'
 
 gem 'minitest', '5.16.3'
 gem 'cancancan'
+gem 'doorkeeper'
+gem 'active_model_serializers', '~> 0.10'
+gem 'oj'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
