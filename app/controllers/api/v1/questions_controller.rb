@@ -13,7 +13,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def create
     authorize! :create, Question
-    @question = current_resource_owner.questions.new(question_params)
+    @question = current_user.questions.new(question_params)
     if @question.save
       render json: @question
     else

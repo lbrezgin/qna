@@ -161,4 +161,3 @@ describe 'Answers API', type: :request do
     end
   end
 end
-

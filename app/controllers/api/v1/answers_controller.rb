@@ -16,7 +16,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
     authorize! :create, Answer
     @question = Question.find(params[:question_id])
 
-    @answer = current_resource_owner.answers.new(answer_params)
+    @answer = current_user.answers.new(answer_params)
     @answer.question = @question
 
     if @answer.save
