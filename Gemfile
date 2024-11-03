@@ -36,6 +36,8 @@ gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
 gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'whenever', require: false
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
