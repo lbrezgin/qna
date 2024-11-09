@@ -36,4 +36,14 @@ RSpec.describe Answer, type: :model do
       expect(answers.first.user.rewards[0]).to eq reward
     end
   end
+
+  describe 'notification' do
+    let!(:question) { create(:question) }
+    let!(:answer) { build(:answer, question: question) }
+
+    it 'calls NotificationJob' do
+      expect(NotificationJob).to receive(:perform_later).with(question)
+      answer.save!
+    end
+  end
 end
