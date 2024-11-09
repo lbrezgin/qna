@@ -9,6 +9,7 @@ div class="question" data-question-id=@question.id
 -if user_signed_in?
   div id="subscription-link"
   - if subscribe?(@question, current_user)
+    p= link_to 'Subscribe', question_subscriptions_path(@question), class: 'link-button', method: :post, remote: true, id: 'subscribe-link', style: 'display: none;'
     p= link_to 'Unsubcribe', subscription_path(@subscription), class: 'link-button', method: :delete, remote: true, id: 'unsubscribe-link'
   - else
     p= link_to 'Subscribe', question_subscriptions_path(@question), class: 'link-button', method: :post, remote: true, id: 'subscribe-link'
