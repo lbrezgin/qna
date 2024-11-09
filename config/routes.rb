@@ -38,6 +38,9 @@ Rails.application.routes.draw do
 
   resources :users, shallow: true do
     resources :questions, concerns: [:votable, :commentable], shallow: true do
+      resources :subscriptions, only: [:create, :destroy], shallow: true do
+      end
+
       resources :answers, concerns: [:votable, :commentable], shallow: true do
         member do
           patch :mark_as_best

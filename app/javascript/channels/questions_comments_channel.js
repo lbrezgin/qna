@@ -6,11 +6,11 @@ $(document).on('turbolinks:load', function(){
 
     consumer.subscriptions.create({channel: "QuestionsCommentsChannel", question_id: questionId}, {
         connected() {
-            // Called when the subscription is ready for use on the server
+            // Called when the subscriptions is ready for use on the server
         },
 
         disconnected() {
-            // Called when the subscription has been terminated by the server
+            // Called when the subscriptions has been terminated by the server
         },
 
         received(data) {
