@@ -3,10 +3,7 @@ class SubscriptionsController < ApplicationController
   authorize_resource
 
   def create
-    @subscription = Subscription.new
-    @subscription.user = current_user
-    @subscription.question = Question.find(params[:question_id])
-
+    @subscription = Subscription.new(user: current_user, question: Question.find(params[:question_id]))
     @subscription.save
   end
 
