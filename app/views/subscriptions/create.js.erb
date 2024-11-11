@@ -1,0 +1,2 @@
+$('#subscribe-link').hide();
+$('#unsubscribe-link').html("<%= j link_to 'Unsubscribe', subscription_path(@subscription), class: 'link-button', method: :delete, remote: true, id: 'unsubscribe-link' %>");
