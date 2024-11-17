@@ -39,3 +39,5 @@ yarn-debug.log*
 config/database.yml
 package-lock.json
 yarn.lock
+config/*.sphinx.conf
+db/sphinx

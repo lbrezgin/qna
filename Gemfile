@@ -38,6 +38,8 @@ gem 'oj'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
+gem 'mysql2'
+gem 'thinking-sphinx'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
