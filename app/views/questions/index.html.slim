@@ -1,3 +1,12 @@
+.sphinx_search
+  = form_with url: "/search", method: :get, local: false do |form|
+    = form.label :query
+    = form.search_field :query
+    = form.select :resource, ['Question', 'Answer', 'Comment', 'User', 'All'], selected: 'Question'
+    = form.submit "Search"
+
+.sphinx_search_result
+
 -if current_user
   -if can?(:create, Question)
     p= button_to 'Ask question', new_user_question_path(current_user), method: :get, class: "button"

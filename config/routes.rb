@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
 
   root to: "questions#index"
+  get '/search', to: 'searches#search'
 
   namespace :api do
     namespace :v1 do

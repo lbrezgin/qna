@@ -1,0 +1,18 @@
+$('.sphinx_search_result').html("");
+
+<% if @resources.any? %>
+  <%@resources.each do |r| %>
+    <% case r.class.name %>
+    <% when 'Question' %>
+      $('.sphinx_search_result').append('<p><%= r.title %> <i><b>(question)</b></i></p>');
+    <% when 'Answer' %>
+      $('.sphinx_search_result').append('<p><%= r.body %> <i><b>(answer)</b></i></p>');
+    <% when 'Comment' %>
+      $('.sphinx_search_result').append('<p><%= r.content %> <i><b>(comment)</b></i></p>');
+    <% when 'User' %>
+      $('.sphinx_search_result').append('<p><%= r.email %> <i><b>(user)</b></i></p>');
+    <% end %>
+  <% end  %>
+<% else %>
+  $('.sphinx_search_result').html('<p>No results found</p>');
+<% end %>
