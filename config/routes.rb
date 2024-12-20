@@ -1,4 +1,5 @@
 require 'sidekiq/web'
+Rails.application.routes.default_url_options[:host] = "XXX"
 
 Rails.application.routes.draw do
   authenticate :user, lambda { |u| u.admin? } do
