@@ -188,6 +188,8 @@ GEM
       childprocess (~> 5.0)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
+    libv8-node (18.19.0.0-x86_64-darwin)
+    libv8-node (18.19.0.0-x86_64-linux)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -205,6 +207,8 @@ GEM
     method_source (1.1.0)
     middleware (0.1.0)
     mini_mime (1.1.5)
+    mini_racer (0.16.0)
+      libv8-node (~> 18.19.0.0)
     minitest (5.16.3)
     msgpack (1.7.3)
     multi_json (1.15.0)
@@ -479,6 +483,7 @@ DEPENDENCIES
   launchy
   letter_opener
   listen (~> 3.3)
+  mini_racer
   minitest (= 5.16.3)
   mysql2
   oj
