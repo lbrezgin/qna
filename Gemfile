@@ -44,7 +44,7 @@ gem 'mini_racer'
 gem 'listen', '~> 3.3'
 gem 'redis', '~> 4.8.1'
 gem 'unicorn'
-
+gem 'dotenv-rails'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password

@@ -40,3 +40,4 @@ config/database.yml
 package-lock.json
 config/*.sphinx.conf
 db/sphinx
+.env
