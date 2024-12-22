@@ -43,6 +43,7 @@ gem 'thinking-sphinx'
 gem 'mini_racer'
 gem 'listen', '~> 3.3'
 gem 'redis', '~> 4.8.1'
+gem 'unicorn'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
@@ -85,6 +86,7 @@ group :development do
   gem 'capistrano-rbenv', require: false
   gem 'capistrano-passenger', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :test do
