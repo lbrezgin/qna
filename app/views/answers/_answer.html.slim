@@ -1,27 +1,28 @@
 div id="answer-#{answer.id}" class="answer"
   - if answer.body
-    = form_with model: answer, class: 'hidden form', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
-      h1 Editing
-      p
-        = f.label :body, 'Your answer'
-        br
-        = f.text_area :body
-      p
-        h2= f.label :files
-        = f.file_field :files, multiple: true, direct_upload: true
-      p
-        - answer.files.each do |file|
-          div id="attachment-#{file.id}"
-            p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
-      h2 Links
-      #links
-        .links
-          = link_to_add_association 'add link', f, :links
-        .answer-links-manage
-          - answer.links.each do |link|
-            div id="link-#{link.id}"
-              p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"
-      = f.submit 'Save', class: "button"
+    - cache answer do
+      = form_with model: answer, class: 'hidden form', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
+        h1 Editing
+        p
+          = f.label :body, 'Your answer'
+          br
+          = f.text_area :body
+        p
+          h2= f.label :files
+          = f.file_field :files, multiple: true, direct_upload: true
+        p
+          - answer.files.each do |file|
+            div id="attachment-#{file.id}"
+              p= (link_to "X", attachment_path(file), method: :delete, remote: true) + " #{file.filename}"
+        h2 Links
+        #links
+          .links
+            = link_to_add_association 'add link', f, :links
+          .answer-links-manage
+            - answer.links.each do |link|
+              div id="link-#{link.id}"
+                p= (link_to "X", link_path(link), method: :delete, remote: true) + " #{link.name}"
+        = f.submit 'Save', class: "button"
 
   - if answer.best
     p class="opinion" = "(Best answer by question's author opinion)"
@@ -74,4 +75,5 @@ div id="answer-#{answer.id}" class="answer"
   div class="answer-#{answer.id}-comments"
     h2 Comments
     - answer.comments.each do |comment|
-      p= comment.content
+      - cache comment do
+        p= comment.content
