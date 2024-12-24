@@ -1,11 +1,4 @@
 = include_gon
-
-div class="question" data-question-id=@question.id
-  = render @question
-
-  .question-errors
-    = render 'shared/errors', resource: @question
-
 -if user_signed_in?
   div id="subscription-link"
   - if subscribe?(@question, current_user)
@@ -17,35 +10,42 @@ div class="question" data-question-id=@question.id
 -else
   p You need to sign in to subscribe
 
+- cache @question do
+  div class="question" data-question-id=@question.id
+    = render @question
 
-h1 Answers
-.answers
-  = render @answers
+    .question-errors
+      = render 'shared/errors', resource: @question
 
-.deleted-info
+  h1 Answers
+  .answers
+    = render @answers
 
-.answer-errors
-  = render 'shared/errors', resource: @answer
+  .deleted-info
 
-.answer-form-in-show
-  h1 New answer
-  -if current_user
-    = form_with model: [@question, @answer], class: 'new-answer form', local: false do |f|
-      p
-        = f.label :body
-        br
-        = f.text_area :body
-      p
-        h2= f.label :files
-        = f.file_field :files, multiple: true, direct_upload: true
-        h2 Links
-        #links
-          = f.fields_for :links do |link|
-            = render 'link_fields', f: link
-          .links
-            = link_to_add_association 'add link', f, :links
+  .answer-errors
+    = render 'shared/errors', resource: @answer
+
+  .answer-form-in-show
+    h1 New answer
+    -if current_user
+      = form_with model: [@question, @answer], class: 'new-answer form', local: false do |f|
+        p
+          = f.label :body
           br
-          = f.submit 'Answer', class: "button"
-  -else
-    p= 'You need to sign in to write answer'
-    p= link_to 'Sign in', new_user_session_path
+          = f.text_area :body
+        p
+          h2= f.label :files
+          = f.file_field :files, multiple: true, direct_upload: true
+          h2 Links
+          #links
+            = f.fields_for :links do |link|
+              = render 'link_fields', f: link
+            .links
+              = link_to_add_association 'add link', f, :links
+            br
+            = f.submit 'Answer', class: "button"
+    -else
+      p= 'You need to sign in to write answer'
+      p= link_to 'Sign in', new_user_session_path
+
