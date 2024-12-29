@@ -1,24 +1,9 @@
-### README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+This project was created for educational purposes and copies the functionality of the "StackOverflow" site.
+### Used technologies:
+* Ruby 3.2.2
+* Rails 6
+* Rspec
+* Devise, thinking-sphinx, omniauth
+* Active Storage, Action Mailer, Action Cable, Active Job
+* Redis, Sidekiq
+* Capistrano, Unicorn
