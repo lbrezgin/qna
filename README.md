@@ -1,4 +1,4 @@
-This project was created for educational purposes and copies the functionality of the "StackOverflow" site.
+This web application project copies the functionality of the "StackOverflow" site.
 ### Used technologies:
 * Ruby 3.2.2
 * Rails 6
