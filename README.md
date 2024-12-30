@@ -1,4 +1,4 @@
-This web application project copies the functionality of the "StackOverflow" site.
+This web application project copies the functionality of the "StackOverflow" website.
 ### Used technologies:
 * Ruby 3.2.2
 * Rails 6
